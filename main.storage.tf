@@ -21,6 +21,7 @@ module "storage" {
     }
   }
   default_to_oauth_authentication = true
+  public_network_access_enabled   = true
 
   network_rules = {
     bypass         = ["None"]
