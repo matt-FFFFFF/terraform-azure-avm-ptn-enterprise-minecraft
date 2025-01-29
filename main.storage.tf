@@ -37,11 +37,10 @@ module "storage" {
     }
   }
   diagnostic_settings_file = {
-    log_analytics = {
-      workspace_resource_id = module.log_analytics.resource_id
-      name                  = "log"
-      log_groups            = ["audit"]
-      metric_categories     = ["Transaction"]
-    }
+    # log_analytics = {
+    #   workspace_resource_id = module.log_analytics.resource_id
+    #   name                  = "log"
+    #   log_groups            = ["audit"]
+    # }
   }
 }
