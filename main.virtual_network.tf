@@ -5,7 +5,7 @@ locals {
 
 module "virtual_network" {
   source        = "Azure/avm-res-network-virtualnetwork/azurerm"
-  version       = "0.7.1"
+  version       = "0.8.1"
   location      = local.location
   address_space = ["192.168.0.0/16"]
   name          = "vnet-minecraft"
@@ -45,14 +45,6 @@ module "virtual_network" {
       }
     }
   }
-  diagnostic_settings = {
-    # log_analytics = {
-    #   workspace_resource_id = module.log_analytics.resource_id
-    #   name                  = "log"
-    #   log_groups            = ["allLogs"]
-    #   metric_categories     = ["AllMetrics"]
-    # }
-  }
 }
 
 module "route_table" {
@@ -69,10 +61,5 @@ module "route_table" {
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = local.firewall_ip
     },
-  }
-
-  subnet_resource_ids = {
-    app = module.virtual_network.subnets["app"].resource_id
-    pe  = module.virtual_network.subnets["private_endpoint"].resource_id
   }
 }

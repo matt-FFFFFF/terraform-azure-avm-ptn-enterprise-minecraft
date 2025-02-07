@@ -27,18 +27,11 @@ module "firewall" {
       public_ip_address_id = module.firewall_public_ip.resource_id
     }
   ]
-  diagnostic_settings = {
-    # log_analytics = {
-    #   log_groups            = ["allLogs"]
-    #   metric_categories     = ["AllMetrics"]
-    #   workspace_resource_id = module.log_analytics.resource_id
-    # }
-  }
 }
 
 module "firewall_policy" {
   source              = "Azure/avm-res-network-firewallpolicy/azurerm"
-  version             = "0.3.2"
+  version             = "0.3.3"
   name                = "fwp-minecraft"
   location            = local.location
   resource_group_name = module.resource_group.name

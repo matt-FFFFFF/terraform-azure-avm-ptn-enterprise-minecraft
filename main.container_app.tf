@@ -29,7 +29,10 @@ module "managed_environment" {
     name                  = "minecraft"
     workload_profile_type = "D4"
   }]
-  depends_on = [module.firewall]
+  depends_on = [
+    module.firewall,
+    module.firewall_policy_rule_collection_group
+  ]
 }
 
 module "container_app" {
@@ -58,6 +61,10 @@ module "container_app" {
           {
             name  = "MEMORY"
             value = "3G"
+          },
+          {
+            name  = "OPS"
+            value = "mattffffff"
           },
           {
             name  = "VERSION"
