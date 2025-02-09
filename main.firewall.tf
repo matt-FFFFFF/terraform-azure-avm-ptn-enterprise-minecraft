@@ -1,7 +1,7 @@
+# This is the public IP address resource that will be used for the Azure Firewall.
 module "firewall_public_ip" {
-  source  = "Azure/avm-res-network-publicipaddress/azurerm"
-  version = "0.2.0"
-  # insert the 3 required variables here
+  source              = "Azure/avm-res-network-publicipaddress/azurerm"
+  version             = "0.2.0"
   name                = "pip-fw-minecraft"
   location            = local.location
   resource_group_name = module.resource_group.name
@@ -10,6 +10,9 @@ module "firewall_public_ip" {
   zones               = ["1", "2", "3"]
 }
 
+
+# This is the Azure Firewall resource that will be used to control the network traffic in the environment.
+# Due to the route table configuration, the firewall will be the default gateway for the virtual network.
 module "firewall" {
   source              = "Azure/avm-res-network-azurefirewall/azurerm"
   version             = "0.3.0"
@@ -29,6 +32,10 @@ module "firewall" {
   ]
 }
 
+
+# This is the firewall policy resource that we will assign to the Azure Firewall.
+# It is used to define the DNS proxy settings and the diagnostic settings for the firewall.
+# The firewall rules are defined in the rule collection groups.
 module "firewall_policy" {
   source              = "Azure/avm-res-network-firewallpolicy/azurerm"
   version             = "0.3.3"

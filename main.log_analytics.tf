@@ -3,6 +3,8 @@ resource "random_id" "log_analytics" {
   prefix      = "law"
 }
 
+# Here we define our log analytics workspace.
+# This workspace is used to store the logs from the Minecraft server and the Azure Firewall.
 module "log_analytics" {
   source                                         = "Azure/avm-res-operationalinsights-workspace/azurerm"
   version                                        = "0.4.2"
@@ -14,19 +16,5 @@ module "log_analytics" {
   log_analytics_workspace_internet_query_enabled = true
   log_analytics_workspace_identity = {
     type = "SystemAssigned"
-  }
-  monitor_private_link_scope = {
-    pe1 = {
-      name        = "law-pe1-scope"
-      resource_id = module.resource_group.resource_id
-    }
-  }
-  monitor_private_link_scoped_service_name = "law-pl-service"
-  private_endpoints = {
-    pe1 = {
-      subnet_resource_id          = module.virtual_network.subnets["private_endpoint"].resource_id
-      network_interface_name      = "nic-law-pe-service"
-      private_dns-zone_group_name = "zg-law-pe-service"
-    }
   }
 }

@@ -3,6 +3,9 @@ resource "random_id" "storage" {
   prefix      = "stg"
 }
 
+data "http" "ipify" {
+  url = "https://api4.ipify.org/"
+}
 module "storage" {
   source                    = "Azure/avm-res-storage-storageaccount/azurerm"
   version                   = "0.4.0"
@@ -26,22 +29,15 @@ module "storage" {
   network_rules = {
     bypass         = ["None"]
     default_action = "Deny"
-    ip_rules       = ["82.71.50.1"]
+    ip_rules       = [data.http.ipify.response_body]
   }
 
   private_endpoints = {
     this = {
-      name                          = "pr-minecraft"
+      name                          = "pep-minecraft"
       subnet_resource_id            = module.virtual_network.subnets["private_endpoint"].resource_id
       subresource_name              = "file"
       private_dns_zone_resource_ids = [module.private_dns_zone["storage"].resource_id]
     }
-  }
-  diagnostic_settings_file = {
-    # log_analytics = {
-    #   workspace_resource_id = module.log_analytics.resource_id
-    #   name                  = "log"
-    #   log_groups            = ["audit"]
-    # }
   }
 }

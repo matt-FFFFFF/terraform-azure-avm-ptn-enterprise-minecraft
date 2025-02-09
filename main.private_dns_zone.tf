@@ -3,9 +3,6 @@ locals {
     storage = {
       domain_name = "privatelink.file.core.windows.net"
     }
-    azure_monitor = {
-      domain_name = "privatelink.monitor.azure.com"
-    }
   }
 }
 
