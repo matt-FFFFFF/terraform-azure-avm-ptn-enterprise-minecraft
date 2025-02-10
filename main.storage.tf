@@ -35,5 +35,12 @@ module "storage" {
 
   # You need to configure the private endpoint for the storage account here!
   # Have a look at the Azure Verified Modules website (the interfaces specification) to see if you can work it out.
-  private_endpoints = {}
+  private_endpoints = {
+    # pe1 = {
+    #   # name                          =
+    #   # private_dns_zone_resource_ids = module.private_dns_zone["storage"].private_dns_zone_ids
+    #   # subnet_resource_id            = module.virtual_network.subnets["private_endpoint"].resource_id
+    #   # subresource_name              = "file"
+    # }
+  }
 }
