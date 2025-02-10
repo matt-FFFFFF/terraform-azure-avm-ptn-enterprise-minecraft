@@ -1,117 +1,240 @@
+# Enterprise minecraft lab
 
-## Azure login
+## Target Audience
 
-```bash
-az login
-```
+This lab guidance is **Level 300** and will guide participants through the **deployment of Azure resources using Bicep OR Terraform with Azure Verified Modules (AVM)**.
 
-Use the details on the `Resources` tab to login to the Azure portal.
-You can click on the `T` icon to type the credentials into the browser.
+It demonstrates how AVM simplifies Infrastructure-as-Code (IaC) practices by offering pre-built, reusable, and secure modules that ensure compliance and operational excellence.
 
-## Clone the repository and open VS Code
+Participants will **learn how to implement scalable, resilient, and secure architectures using these modules**, aligning with enterprise standards and best practices for resource provisioning in Azure.
 
-```bash
-git clone https://github.com/matt-FFFFFF/terraform-azure-avm-ptn-enterprise-minecraft.git
-cd terraform-azure-avm-ptn-enterprise-minecraft
-code .
-```
+## Foreword
 
-## Set your subscription id in Terraform
+**If you have any questions** or the need for more clarity on what is happening during the lab, please don't hesitate to **raise your hand to get help by our proctors**.
 
-Find your subscription id by running the following command:
+Good luck!
 
-```bash
-az account show --query id
-```
+## Table of Contents
 
-Now edit the `terraform.tf` file and set the `subscription_id` variable to the value you just found.
-Change the provider block to look like this:
+The following experiences are covered in this course. Select the appropriate path:
 
-```hcl
-provider "azurerm" {
-  subscription_id = "00000000-0000-0000-0000-000000000000" # Change this to your subscription id
-  features {}
+- [Bicep](#bicep-instructions)
+
+- [Terraform](#terraform-instructions)
+
+===
+
+# Bicep instructions
+
+Welcome to the bicep instructions for LAB310: Infra-as-Code based migrations with Azure Verified Modules
+
+In this repository ++<https://github.com/ChrisSidebotham/avm-bicep-lab-minecraft/tree/main++> you will find the content to get started with the deployment under the lab folder. You should use the `sample.main.bicep` to get started with your deployment. The samples look like as follows:
+
+```bicep
+module vnet 'br/public:avm/res/network/virtual-network:0.x.x' = {
+
 }
 ```
 
-## Install the base infrastructure
+**Tasks**
 
-Some of these resources can take a few minutes to create, so please start this step as soon as possible.
+- You should update the version to the appropiate version
+- You should complete all of the required parameters for the resource deployment
+
+## Tips
+
+- Remember to use `ctrl+space` to bring up intellisense
+- Hover over the 'friendly name' of the resource (e.g vnet) for a link to the documentation:
+
+!IMAGE[LAB310_bicep_01.jpg](instructions281460/LAB310_bicep_01.jpg)
+
+## Scenario
+
+- Contoso wants to migrate its LoB application to Azure
+- Re-factor the app to run using cloud-native services
+- A container + persistent storage
+- Implement well-architected reliability and security best-practices
+- App is isolated with dedicated ingress/egress
+
+### Target Architecture
+
+!IMAGE[LAB310_architecture.jpg](instructions281460/LAB310_architecture.jpg)
+
+### Requirements
+
+- Use Azure Verified Modules
+- Use Managed Identities
+- Private Endpoints must be utilised for connectivity
+- Vnet Integration for Container Apps
+- Azure Firewall should be used as the cental ingress/egress point
+- Minecraft image used should be `itzg/docker-minecraft-server`
+
+## Deployment Commands
+
+To deploy your resources to the azure subscription within the lab, you can use your own commands or some quickstarts are provided below:
+
+### Create the Resource group
 
 ```bash
-terraform init
-terraform apply
+az login
+az group create -n 'lab310-rg'
 ```
 
-Note the public IP address output, you will need this if you are intending to connect to the server.
+### Create the Resources using Deployment Stacks
+
+```bash
+cd <Enter location of Directory holding main.bicep>
+az login
+az stack group create -n 'lab310stack01' -g 'lab310-rg' --template-file .\main.bicep --dm none --aou detachAll --yes
+```
+
+===
+
+**Congratulations, you have completed all tasks in this lab**
+
+[**Go back to the main table of content**](#table-of-contents)
+
+===
+
+# Terraform instructions
+
+Welcome to the Terraform instructions for LAB310: Infra-as-Code based migrations with Azure Verified Modules
+
+In this repository ++<https://github.com/matt-ffffff/terraform-azure-avm-ptn-enterprise-minecraft++> you will find the content to get started with the deployment.
+
+## Scenario
+
+- Contoso wants to migrate its LoB application to Azure
+- Re-factor the app to run using cloud-native services
+- A container + persistent storage
+- Implement well-architected reliability and security best-practices
+- App is isolated with dedicated ingress/egress
+
+### Target Architecture
+
+!IMAGE[LAB310_architecture.jpg](instructions281460/LAB310_architecture.jpg)
+
+1. [ ] Azure login
+
+    ```shell
+    az login -t "@lab.CloudSubscription.TenantId" -u "@lab.CloudPortalCredential(User1).Username" -p "@lab.CloudPortalCredential(User1).Password"
+    az account set --subscription "@lab.CloudSubscription.Id"
+    echo 'logged in'
+    ```
+
+    Use the details on the `Resources` tab to login to the Azure portal.
+    You can click on the `T` icon to type the credentials into the browser.
+
+1. [ ]  Clone the repository and open VS Code
+
+    ```shell
+    git clone https://github.com/matt-FFFFFF/terraform-azure-avm-ptn-enterprise-minecraft.git
+    cd terraform-azure-avm-ptn-enterprise-minecraft
+    code .
+    echo 'vscode opened'
+    ```
+
+1. [ ] Set your subscription id in Terraform
+
+    Open the `terraform.tf` file and paste in this information:
+
+    ```hcl
+    provider "azurerm" {
+      subscription_id = "@lab.CloudSubscription.Id"
+      features {}
+    }
+    ```
+
+===
+
+# Terraform instructions 2
+
+1. [ ] Install the base infrastructure
+
+    Some of these resources can take a few minutes to create, so please start this step as soon as possible!
+
+    ```shell
+    terraform init && terraform apply
+    echo 'apply complete'
+    ```
 
 1. [ ] Inspect the configuration during apply
 
-    * add stuff
+    Take a look at the terraform configuration that you have started with.
+    Understand how the modules we have selected correcpond to the architecture.
 
-## (Optional) Install Minecraft (Java Edition) on your company laptop
+    Look how the AVM modules are used together to deploy this enterprise style configuration.
 
-If you have a Minecraft account, you can install the game on your company laptop to test the world.
+    Look at the [AVM interface definitions](https://azure.github.io/Azure-Verified-Modules/specs/tf/interfaces/) and see how they are implemented identically on each resource module.
 
-> Note you must have a license to play minecraft - you can use GamePass or purchase the game from the store.
+1. [ ] (Optional) Install Minecraft Java Edition on your laptop
 
-<https://aka.ms/minecraftClientGameCoreWindows>
+    If you have a Minecraft account, you can install the game on your laptop to test the world when it is deployed.
 
-## Deploy the storage account private endpoint
+    > Note you must have a license to play minecraft - you can use GamePass or purchase the game from the store.
 
-In the `main.storage.tf` file, you will see a placeholder for the private endpoint configuration.
-You need to configure the following fields to make the private endpoint work with the storage account:
+    <https://aka.ms/minecraftClientGameCoreWindows>
 
-* name
-* subnet resource id
-* sub-resource name (hint! this is `file` for Azure file storage)
-* private DNS zone resource IDs (this is a list of the resource IDs for all the private DNS zones that we want to associate)
+1. [ ] Deploy the container app
 
-Once you have configured the private endpoint, run `terraform apply` again.
+    We now need to define the minecraft application.
+    As ever there is an AVM module to do this!
 
-## Deploy the container app
+    You can see this by running this command:
 
-We now need to define the minecraft application.
-As ever there is an AVM module to do this!
+    ```shell
+    git checkout finalanswer main.container_app.tf
+    echo 'checked out the container app file'
+    ```
 
-You can see this by running this command:
+    Have a look at the file, then run `terraform apply` to deploy the workload.
 
-```shell
-git checkout finalanswer main.container_app.tf
-```
+    ```shell
+    terraform apply
+    echo 'deployed the container app'
+    ```
 
-Have a look at the file, then run `terraform apply` to deploy the workload.
+1. [ ] Check the container logs
 
-## Check the container logs
+    Open @lab.CloudPortal.Link, look at the output from the container.
+    Check that the server has started successfully.
 
-In the Azure portal, look at the output from the container.
-Check that the server has started successfully.
+    - Go to your container app in the Azure portal.
 
-## (Optional) Connect to the server
+    - Select Log stream under the Monitoring section on the sidebar menu.
 
-Using your minecraft client, or a proctor's client, connect to the server.
+    - To view the console log stream, select Console.
 
-## Stop the container and restore the data
+1. [ ] (Optional) Connect to the server
 
-In the Azure portal, stop the container.
+    Using your minecraft client, or a proctor's client, connect to the server using the public IP address displayed after the `terraform apply` command.
 
-Using Azure Storage Explorer, connect to your storage account.
-In the minecraft data share, delete the `world` directory.
+===
 
-Download and unzip the `world.zip` file supplied to you by the proctors.
-Copy the world directory from your lab VM to the Azure File share.
+# Terraform instructions 3
 
-## Start the container
+1. [ ] Stop the container and restore the data
 
-In the Azure portal, start the container.
-Check the logs for errors.
+    - In the Azure portal, stop the container.
 
-## Connect to the restored world
+    - Using Azure Storage Explorer, connect to your Azure subscription using the plug socket icon.
 
-Using yours, or a proctor's minecraft client, connect to your server.
-You should see that the world is different!
+    - In the minecraft data share, delete the `world` directory.
 
-## Completion
+    - Download and unzip the [`world.zip`](https://stgavmlab84732.blob.core.windows.net/data/world.zip) file.
 
-Thanks for completing the Azure Verified Modules lab.
-We hope that you have seen how AVM can be used to simplify the process of re-host migration in Azure.
+    - Copy the world directory from your lab VM to the Azure File share.
+
+1. [ ] Start the container
+
+    - Open @lab.CloudPortal.Link, and start the container.
+    - Check the logs for errors.
+
+1. [ ] Connect to the restored world
+
+    Using your own, or a proctor's minecraft client, connect to your server.
+    You should see that the world is different!
+
+1. [ ] Complete!
+
+    Congratulations on completing the lab!
