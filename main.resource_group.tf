@@ -1,7 +1,7 @@
 resource "random_pet" "resource_group_name" {
   length    = 2
   separator = "-"
-  prefix    = "rg-"
+  prefix    = "rg"
 }
 
 # The resource group
