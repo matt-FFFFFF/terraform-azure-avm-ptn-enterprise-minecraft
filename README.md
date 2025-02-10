@@ -45,7 +45,9 @@ terraform apply
 
 Note the public IP address output, you will need this if you are intending to connect to the server.
 
-## Inspect the configuration during apply
+1. [ ] Inspect the configuration during apply
+
+    * add stuff
 
 ## (Optional) Install Minecraft (Java Edition) on your company laptop
 
@@ -60,10 +62,10 @@ If you have a Minecraft account, you can install the game on your company laptop
 In the `main.storage.tf` file, you will see a placeholder for the private endpoint configuration.
 You need to configure the following fields to make the private endpoint work with the storage account:
 
-- name
-- subnet resource id
-- sub-resource name (hint! this is `file` for Azure file storage)
-- private DNS zone resource IDs (this is a list of the resource IDs for all the private DNS zones that we want to associate)
+* name
+* subnet resource id
+* sub-resource name (hint! this is `file` for Azure file storage)
+* private DNS zone resource IDs (this is a list of the resource IDs for all the private DNS zones that we want to associate)
 
 Once you have configured the private endpoint, run `terraform apply` again.
 
@@ -96,7 +98,7 @@ In the Azure portal, stop the container.
 Using Azure Storage Explorer, connect to your storage account.
 In the minecraft data share, delete the `world` directory.
 
-Downlaod and unzip the `world.zip` file supplied to you by the proctors.
+Download and unzip the `world.zip` file supplied to you by the proctors.
 Copy the world directory from your lab VM to the Azure File share.
 
 ## Start the container

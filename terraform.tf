@@ -16,7 +16,4 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  # subscription_id = ""
-  features {}
-}
+# Insert your azurerm provider block here:
