@@ -33,11 +33,11 @@ module "storage" {
   }
 
   private_endpoints = {
-    this = {
-      name                          = "pep-minecraft"
-      subnet_resource_id            = module.virtual_network.subnets["private_endpoint"].resource_id
-      subresource_name              = "file"
-      private_dns_zone_resource_ids = [module.private_dns_zone["storage"].resource_id]
-    }
+    # this = {
+    #   name                          =
+    #   subnet_resource_id            =
+    #   subresource_name              =
+    #   private_dns_zone_resource_ids =
+    # }
   }
 }
